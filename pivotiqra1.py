@@ -768,7 +768,13 @@ with tab10:  # =================================================================
         #view DataFrame
 
 
-        df = pd.read_excel('c:\mfa\mfatt.xlsx')
+        url12 = "https://docs.google.com/spreadsheets/d/1aGT703zXe1h_dgG-59fHlFEYzNdYqyla/edit?gid=1489174106#gid=1489174106"
+        file_id122 = url12.split("/")[-2]
+        path1122 = "https://drive.google.com/uc?export=download&id=" + file_id122
+        df = pd.read_excel(path1122)
+
+    
+        #df = pd.read_excel('c:\mfa\mfatt.xlsx')
 
 
         ttt = pd.concat([
