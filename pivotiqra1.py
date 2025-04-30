@@ -339,15 +339,8 @@ with tab7:
     # Highlighting Maximum and Minimum Values
     dd5 = df.style.highlight_max(color='green', axis=0 , subset=['Cost Price', 'Satisfaction Score', 'Sales Amount']).highlight_min(color='red', axis=0 , subset=['Cost Price', 'Satisfaction Score', 'Sales Amount'])
     st.write(dd5)
-    button_b = st.button('Open Excel', key='but_b')
-    if button_b:
-            root = Tk()
-            w = Label(root, text='GeeksForGeeks.org!')
-            w.pack()
-            dd5.to_excel("c:\mfa\CONF.xlsx")    
-            os.system('start "excel" "c:\mfa\CONF.xlsx"')
-            root.mainloop()
-
+    
+  
             
 
 
@@ -798,17 +791,15 @@ with tab10:  # =================================================================
                                     columns=['position','area','per','reg'],
                                     aggfunc='sum')
         st.write(mya2)
-        #if st.button('Check availability'):
-        button_a = st.button('Open Excela', key='but_a')
-        if button_a:
-            root = Tk()
-            w = Label(root, text='GeeksForGeeks.org!')
-            w.pack()
-            mya2.to_excel("c:\mfa\output.xlsx")    
-            os.system('start "excel" "c:\mfa\output.xlsx"')
-            root.mainloop()
-            
-            
+        
+        csv = mya2.to_csv().encode("utf-8")
+        st.download_button(
+            label="Download CSV",
+            data=csv,
+            file_name="data.csv",
+            mime="text/csv",
+            icon=":material/download:",)
+                    
             
         
         
