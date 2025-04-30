@@ -1,5 +1,3 @@
-from tkinter import *
-from tkinter import ttk
 import numpy as np
 import os
 import streamlit.components.v1 as components
