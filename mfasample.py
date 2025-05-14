@@ -1,3 +1,6 @@
+import mysql.connector
+from streamlit_js_eval import streamlit_js_eval
+import datetime
 import numpy as np
 import os
 import streamlit.components.v1 as components
@@ -59,6 +62,14 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import numpy as np
 
+if 'newrecord' not in st.session_state:
+    st.session_state.newrecord = 0
+
+
+
+
+
+    
 
 
 
@@ -100,7 +111,7 @@ data = load_data()
 
 
 shouldDisplayPivoted = st.checkbox("Pivot data on Reference Date",True)
-tab1, tab2, tab3, tab4 , tab5, tab6, tab7,tab8,tab9,tab10,tab11 = st.tabs(["View-1", "View-2", "View-3", "View-4", "View-5", "View-6", "View-7", "View-Graph", "View-Groupby", "View-Pivot", "View-Finance"])
+tab1, tab2, tab3, tab4 , tab5, tab6, tab7,tab8,tab9,tab10,tab11,tab12,tab13 = st.tabs(["View-1", "View-2", "View-3", "View-4", "View-5", "View-6", "View-7", "View-Graph", "View-Groupby", "View-Pivot", "View-Finance", "Data Entery ", "MySql Data "])
 #tab1, tab2, tab3, tab4 = st.tabs(["View-1", "View-2", "View-3", "View-4"])
 
 with tab1:
@@ -648,24 +659,6 @@ with tab8:  # ==================================================================
             ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
             st.pyplot(fig1)
 
-        with st.expander("Iqra Dynamic Graph"):
-            
-            #df = pd.read_csv('https://github.com/chris1610/pbpython/blob/master/data/cereal_data.csv?raw=True')
-            df = pd.read_excel('c:/mfa/iqradata.xlsx')
-            
-            #df['newf'] = df['type']+'-'+df['shelf']
-            
-            st.write(df)
-    #        Campus	Faculty	Career	Program	ctype	semister	credithh
-    #        'Campus','Faculty','Career','Program','ctype','semister'	credithh
-
-
-            fig = px.sunburst(df, path=['Campus','Faculty','Career','Program','ctype','semister'], values='credithh')
-            #fig = px.sunburst(df, path=['mfr','shelf','type'], values='cereal')
-            #fig.show()
-            st.plotly_chart(fig)
-            
-
             
         with st.expander("Dynamic Graph"):
             
@@ -893,12 +886,12 @@ with tab11:  # =================================================================
                 update_mode=GridUpdateMode.SELECTION_CHANGED)
 
     #st.write(dta['selected_rows'])
-    mm=dta['selected_rows']
+    #mm=dta['selected_rows']
     #item1 = mm[1]
     mfa= pd.DataFrame(dta['selected_rows'])
     #st.write(mm)
-    length = len(mm)
-    if length>0 :
+    if len(mfa)>0 :
+    #if length>0 :
     #st.write(mfa["fullcode"][0])
         df7 = df5 
         filtered_df = df5[df5['code'] == mfa["fullcode"][0]]
@@ -929,17 +922,82 @@ with tab11:  # =================================================================
             #v_df = df6[df6['acode'] == mfahh["code"][0]]
             st.write(resultv)
                 
+with tab12:  # =======================================================================    
+
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
+    st.title('Muhammad is the Best all over the universes')
+    vdate = st.date_input("V-Date", datetime.date(2019, 7, 6))
+
+ #   def stdataedtiorload():
             
 
+#    if st.button("New Record", on_click=stdataedtiorload):
+    #if st.session_state.newrecord==0 :
+    df = pd.DataFrame(    {        "sno": [       0  ],        "sname": [     ''    ],        " sfee": [      0   ]   })
+    newrecord1 = st.data_editor(df,num_rows="dynamic",key="demo_df")
+    
+        
+    ttt2 = pd.DataFrame(newrecord1) 
+    ttt2["fdate"] = vdate
+        #rows = [tuple(x) for x in ttt2.values]
 
-                                    
+
+    if st.button("Save Record", ):
+        conn = mysql.connector.connect(
+                host="hq3-6.h.filess.io",
+                user="mfadb_strongwill",
+                password="ffad1e1cd30388902ba276d26c3b4f6042dacd45",
+                database="mfadb_strongwill",
+                port=3307,
+
+            )
+        
+        curr = conn.cursor()
+        rows = [tuple(x) for x in ttt2.values]
+        insert_query = "INSERT INTO stable (sno,sname , sfee , fdate ) VALUES (%s,%s, %s, %s)"
+        for row in rows:
+            curr.execute(insert_query, row)
+        
+        
+        conn.commit()
+        conn.close()
+        #df = pd.DataFrame(    {        "sno": [       0  ],        "sname": [     ''    ],        " sfee": [      0   ]   })
+        #newrecord1 = st.data_editor(df,num_rows="dynamic",key="demo_df")
+        #st.title('Muhammad is the Best all over the universes')
+        #ttt = 'Data Save'
+        #st.write(ttt)
+        
+        streamlit_js_eval(js_expressions="parent.window.location.reload()")        
+        
+        
+        
+with tab13:  # =======================================================================    
+        
+    conn = mysql.connector.connect(
+    host="9r-1o.h.filess.io",
+    user="mfaerpdb_behaviorme",
+    password="6d9a14c6f222ec9f3c724a611c8a184e5d01ed9f",
+    database="mfaerpdb_behaviorme",
+    port=3307
+    )
+
+
+    curr = conn.cursor()
+    curr.execute("select * from mfaerptable")
+    data = curr.fetchall()
+    st.title('Muhammad is the Best all over the universes')
+    df = pd.DataFrame(data,columns=curr.column_names)
+    st.write(df)
+    conn.close()
+
+                
+                
+                
+                
+                
+                
+                
+                
+
+
+                                        
